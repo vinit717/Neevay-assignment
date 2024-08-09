@@ -1,5 +1,5 @@
 const SearchResultText = ({ totalResults = 0, searchTerm = '' }) => {
-  const defaultMessage = 'Showing 1-10 of 232 results for “Plumbing”';
+  const defaultMessage = '';
 
   const message = totalResults && searchTerm
     ? `Showing 1-10 of ${totalResults} results for “${searchTerm}”`

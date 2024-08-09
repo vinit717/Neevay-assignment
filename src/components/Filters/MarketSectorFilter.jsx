@@ -1,14 +1,12 @@
-// MarketSectorFilter.js
 import React, { useState } from 'react';
 import { actionTypes } from '../../store/searchReducer';
 
-
 const allMarketSectors = [
-    'HealthCare', 'Industrial', 'Infrastructure', 'Residential', 'Commercial', 'Hospitals', 'Hotel', 'Data Centers'
+    'Industrial', 'Infrastructure', 'Residential', 'Commercial', 'Hospitals', 'Hotel', 'Data Centers'
 ];
 
 const MarketSectorFilter = ({ dispatch, filters }) => {
-    const [selectedCities, setSelectedCities] = useState(filters.city ? [filters.city] : []);
+    const [selectedSectors, setSelectedSectors] = useState(filters.marketSector ? filters.marketSector.split(', ') : []);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [showAll, setShowAll] = useState(false);
 
@@ -16,15 +14,15 @@ const MarketSectorFilter = ({ dispatch, filters }) => {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
-    const handleCheckboxChange = (city) => {
-        let updatedCities = selectedCities.includes(city)
-            ? selectedCities.filter(c => c !== city)
-            : [...selectedCities, city];
-        setSelectedCities(updatedCities);
+    const handleCheckboxChange = (sector) => {
+        let updatedSectors = selectedSectors.includes(sector)
+            ? selectedSectors.filter(s => s !== sector)
+            : [...selectedSectors, sector];
+        setSelectedSectors(updatedSectors);
 
         dispatch({
             type: actionTypes.SET_FILTERS,
-            payload: { city: updatedCities.join(', ') },
+            payload: { marketSector: updatedSectors.join(', ') },
         });
     };
 
@@ -40,12 +38,12 @@ const MarketSectorFilter = ({ dispatch, filters }) => {
 
             {isDropdownOpen && (
                 <div>
-                    <div style={{ maxHeight: '200px', overflowY: 'scroll' }} className='p-2'>
+                    <div style={{ maxHeight: '200px', overflowY: 'hidden' }} className='p-2'>
                         {MarketSectorToShow.map(sector => (
                             <div className='flex items-center mb-2' key={sector}>
                                 <input
                                     type="checkbox"
-                                    checked={selectedCities.includes(sector)}
+                                    checked={selectedSectors.includes(sector)}
                                     onChange={() => handleCheckboxChange(sector)}
                                     className='w-4 h-4 text-blue-500 bg-gray-100 border-gray-300 rounded-sm focus:ring-1 focus:ring-blue-500'
                                 />

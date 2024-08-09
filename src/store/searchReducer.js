@@ -63,10 +63,10 @@ export const initialState = {
   
         const filtered = state.vendors.filter((vendor) => {
           const matchesCity = searchByOfficeAddressOnly
-            ? vendor.officeAddress?.City?.includes(city)
+            ? vendor.officeAddress?.City === city
             : (!city ||
-                vendor.officeAddress?.City?.includes(city) ||
-                vendor.serviceLocations?.Selectedcities?.includes(city));
+                vendor.officeAddress?.City === city ||
+                vendor.serviceLocations?.Selectedcities.includes(city));
   
           const matchesTurnover = vendor.turnover
             ? parseInt(vendor.turnover.replace(/\D/g, '')) >= turnoverRange[0] &&
@@ -74,37 +74,44 @@ export const initialState = {
             : true;
             
           const matchesLaborStrength = () => {
-              if (!laborStrength) return true;
-              if (laborStrength === '100+') return parseInt(vendor.laborStrength.split('-')[1]) >= 100;
-              
-              const [filterMin, filterMax] = laborStrength.split('-').map(Number);
-              const [vendorMin, vendorMax] = vendor.laborStrength.split('-').map(Number);
-              
-              return (vendorMin <= filterMax && vendorMax >= filterMin);
-            };
-
-            const matchesBusinessAge = () => {
-              if (!businessAge) return true;
-              const [filterMin, filterMax] = businessAge.split('-').map(num => parseInt(num.trim()));
-              const vendorAge = parseInt(vendor.businessAge.split('-')[1]);
-              
-              if (businessAge.includes('+')) {
-                return vendorAge >= filterMin;
-              }
-              return vendorAge >= filterMin && vendorAge <= filterMax;
-            };
-
-            const matchesMinProjectsCompleted = () => {
-              if (!minProjectsCompleted) return true;
-              return vendor.projectsCompleted >= minProjectsCompleted;
+            if (!laborStrength) return true;
+            if (laborStrength === '100+') return parseInt(vendor.laborStrength.split('-')[1]) >= 100;
+            
+            const [filterMin, filterMax] = laborStrength.split('-').map(Number);
+            const [vendorMin, vendorMax] = vendor.laborStrength.split('-').map(Number);
+            
+            return (vendorMin <= filterMax && vendorMax >= filterMin);
           };
+  
+          const matchesBusinessAge = () => {
+            if (!businessAge) return true;
+            const [filterMin, filterMax] = businessAge.split('-').map(num => parseInt(num.trim()));
+            const vendorAge = parseInt(vendor.businessAge.split('-')[1]);
+            
+            if (businessAge.includes('+')) {
+              return vendorAge >= filterMin;
+            }
+            return vendorAge >= filterMin && vendorAge <= filterMax;
+          };
+  
+          const matchesMinProjectsCompleted = () => {
+            if (!minProjectsCompleted) return true;
+            return vendor.projectsCompleted >= minProjectsCompleted;
+          };
+  
+          const matchesMarketSector = () => {
+            if (!marketSector) return true;
+            const sectors = marketSector.split(', ').map(s => s.toUpperCase());
+            return sectors.some(sector => vendor.marketSector.includes(sector));
+          };
+  
           return (
             (!vendorType || vendor.vendorType.includes(vendorType)) &&
             (!services || vendor.services.some(service => service.includes(services))) &&
             matchesCity &&
             (!searchTerm || vendor.vendorName.toLowerCase().includes(searchTerm.toLowerCase())) &&
             (!verifiedStatus || vendor.verifiedStatus === verifiedStatus) &&
-            (!marketSector || vendor.marketSector.includes(marketSector)) &&
+            matchesMarketSector() &&
             matchesLaborStrength() &&
             matchesBusinessAge() &&
             matchesMinProjectsCompleted() &&
@@ -119,6 +126,7 @@ export const initialState = {
         return state;
     }
   };
+  
   
   
   
