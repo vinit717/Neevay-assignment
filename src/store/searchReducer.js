@@ -72,7 +72,32 @@ export const initialState = {
             ? parseInt(vendor.turnover.replace(/\D/g, '')) >= turnoverRange[0] &&
               parseInt(vendor.turnover.replace(/\D/g, '')) <= turnoverRange[1]
             : true;
-  
+            
+          const matchesLaborStrength = () => {
+              if (!laborStrength) return true;
+              if (laborStrength === '100+') return parseInt(vendor.laborStrength.split('-')[1]) >= 100;
+              
+              const [filterMin, filterMax] = laborStrength.split('-').map(Number);
+              const [vendorMin, vendorMax] = vendor.laborStrength.split('-').map(Number);
+              
+              return (vendorMin <= filterMax && vendorMax >= filterMin);
+            };
+
+            const matchesBusinessAge = () => {
+              if (!businessAge) return true;
+              const [filterMin, filterMax] = businessAge.split('-').map(num => parseInt(num.trim()));
+              const vendorAge = parseInt(vendor.businessAge.split('-')[1]);
+              
+              if (businessAge.includes('+')) {
+                return vendorAge >= filterMin;
+              }
+              return vendorAge >= filterMin && vendorAge <= filterMax;
+            };
+
+            const matchesMinProjectsCompleted = () => {
+              if (!minProjectsCompleted) return true;
+              return vendor.projectsCompleted >= minProjectsCompleted;
+          };
           return (
             (!vendorType || vendor.vendorType.includes(vendorType)) &&
             (!services || vendor.services.some(service => service.includes(services))) &&
@@ -80,9 +105,9 @@ export const initialState = {
             (!searchTerm || vendor.vendorName.toLowerCase().includes(searchTerm.toLowerCase())) &&
             (!verifiedStatus || vendor.verifiedStatus === verifiedStatus) &&
             (!marketSector || vendor.marketSector.includes(marketSector)) &&
-            (!laborStrength || vendor.laborStrength.includes(laborStrength)) &&
-            (!businessAge || vendor.businessAge.includes(businessAge)) &&
-            (!minProjectsCompleted || vendor.projectsCompleted >= minProjectsCompleted) &&
+            matchesLaborStrength() &&
+            matchesBusinessAge() &&
+            matchesMinProjectsCompleted() &&
             matchesTurnover
           );
         });

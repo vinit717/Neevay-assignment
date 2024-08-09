@@ -5,7 +5,7 @@ import SearchResultFilters from './SearchResultFilters';
 import SearchResultText from './SearchResultText';
 import SearchResultPagination from './SearchResultPagination';
 import SearchResultFooter from './SearchResultFooter';
-import { initialState, reducer, actionTypes } from './store/searchReducer';
+import { initialState, reducer, actionTypes } from '../store/searchReducer';
 import vendorData from '../vendorData.json';
 
 const SearchResults = () => {
@@ -39,25 +39,29 @@ const SearchResults = () => {
             className='max-w-[1280px] mx-auto flex flex-col justify-center hide-scrollbar'
             style={{ overflowY: 'scroll', msOverflowStyle: 'none', scrollbarWidth: 'none' }}
         >
-          <style>
-        {`
-          .hide-scrollbar {
-            -ms-overflow-style: none; /* Internet Explorer 10+ */
-            scrollbar-width: none; /* Firefox */
-          }
-          .hide-scrollbar::-webkit-scrollbar {
-            display: none; /* Safari and Chrome */
-          }
-        `}
-      </style>
+            <style>
+                {`
+                  .hide-scrollbar {
+                    -ms-overflow-style: none; /* Internet Explorer 10+ */
+                    scrollbar-width: none; /* Firefox */
+                  }
+                  .hide-scrollbar::-webkit-scrollbar {
+                    display: none; /* Safari and Chrome */
+                  }
+                `}
+            </style>
             <SearchResultNavbar onSearchChange={handleSearchChange} />
             <SearchResultText 
-            totalResults={state.filteredVendors.length} 
-            searchTerm={state.filters.services} 
+                totalResults={state.filteredVendors.length} 
+                searchTerm={state.filters.services} 
             />
             <div className='flex justify-between bg-gray-100'>
                 <div className='my-8 h-screen overflow-y-auto hide-scrollbar'>
-                    <SearchResultFilters />
+                <SearchResultFilters 
+                  dispatch={dispatch} 
+                  filters={state.filters} 
+                />
+
                 </div>
                 <div className='mt-8 h-screen overflow-y-auto hide-scrollbar'>
                     <SearchResultCards cards={currentCards} />
