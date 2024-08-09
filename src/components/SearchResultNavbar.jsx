@@ -24,6 +24,7 @@ const SearchResultNavbar = ({ onSearchChange }) => {
                     </div>
                     <div className='flex justify-around md:justify-between items-center xs:py-2 md:py-0'>
                             <>
+                            <h3 className='font-semibold text-[#F16500]'>Join as Vendor</h3>
                                 <button  className=' h-[43px] px-6 md:h-[44px] md:px-0 md:w-[108px] xs:text-sm md:text-base mx-4 border hover:font-bold border-black'>Login</button>
                                 <button className='flex items-center justify-around md:text-sm xs:text-sm  md:h-[44px] md:w-[135px] w-[100px] h-[43px] hover:font-bold text-white bg-gradient-to-r from-[#24242D] to-[#0B0B1A] border-l-4 border-[#F16500]'>
                                     Signup

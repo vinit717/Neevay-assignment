@@ -16,7 +16,10 @@ const SearchResultFilters = () => {
     const [showAll, setShowAll] = useState(false);
     const [selectedCities, setSelectedCities] = useState([]);
 
-    const [turnover, setTurnover] = useState(false); const [range, setRange] = useState([0, 100]); const handleTurnoverDropdown = () => { setTurnover(!turnover); }; const handleSliderChange = (values) => { setRange(values); };
+    const [turnover, setTurnover] = useState(false);
+     const [range, setRange] = useState([0, 100]); 
+     const handleTurnoverDropdown = () => { setTurnover(!turnover); };
+      const handleSliderChange = (values) => { setRange(values); };
 
     const handleChangeProjects = (event) => {
         setProjects(event.target.value);
