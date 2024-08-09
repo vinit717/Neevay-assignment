@@ -1,45 +1,31 @@
 import React, { useState } from 'react';
 import ReactSlider from 'react-slider';
 
-const allCities = [
-    'Pune', 'Mumbai', 'Delhi', 'Bengaluru', 'Chennai', 'Kolkata', 'Hyderabad', 'Ahmedabad',
-    'Nashik', 'Ahmednagar', 'Nagpur'
+const allMarketSectors = [
+    'HealthCare', 'Industrial', 'Infrastructure', 'Residential', 'Commercial', 'Hospitals', 'Hotel', 'Data Centers'
 ];
 
 const SearchResultFilters = () => {
     const [value, setValue] = useState(0);
     const [projects, setProjects] = useState(50);
-    const [services, setServices] = useState(false);
     // const [turnover, setTurnover] = useState(false);
     const [labour, setLabour] = useState(false);
     const [businessAge, setBusinessAge] = useState(false);
     const [projectOpen, setProjectOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [showAll, setShowAll] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
     const [selectedCities, setSelectedCities] = useState([]);
 
     const [turnover, setTurnover] = useState(false); const [range, setRange] = useState([0, 100]); const handleTurnoverDropdown = () => { setTurnover(!turnover); }; const handleSliderChange = (values) => { setRange(values); };
-
-    const handleChangeTurnover = (event) => {
-        setValue(event.target.value);
-    };
 
     const handleChangeProjects = (event) => {
         setProjects(event.target.value);
     };
 
-    const handleServiceDropdown = () => {
-        setServices(!services);
-    };
-
-    const handleLocationDropdown = () => {
+    const handleMarketSectorDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
-    const filteredCities = allCities.filter(city =>
-        city.toLowerCase().includes(searchQuery.toLowerCase())
-    );
 
     const handleCheckboxChange = (city) => {
         setSelectedCities(prevState =>
@@ -49,11 +35,8 @@ const SearchResultFilters = () => {
         );
     };
 
-    const citiesToShow = showAll ? filteredCities : filteredCities.slice(0, 4);
+    const MarketSectorToShow  = showAll ? allMarketSectors : allMarketSectors.slice(0, 4);
 
-    // const handleTurnoverDropdown = () => {
-    //     setTurnover(!turnover);
-    // };
 
     const handleLabourDropdown = () => {
         setLabour(!labour);
@@ -86,45 +69,27 @@ const SearchResultFilters = () => {
                         </label>
                     </div>
 
-                    {/* services */}
-                    <div>
-                        <button onClick={handleServiceDropdown} className='w-full flex items-center justify-between text-[#2F2F1C] text-base font-semibold'>
-                            Services
-                            <img src="https://storagereponeevaydevcdn.blob.core.windows.net/business/dropdown_arrow.svg" alt="v"
-                                className={`transition-transform duration-300 ${services ? 'rotate-180' : 'rotate-0'}`} />
-                        </button>
-
-                        {services && (
-                            <div className='border border-[#979797] bg-white flex justify-between items-center w-[276px] h-[44px] mt-4'>
-                                <input type="text" placeholder='Search' className='w-full border-none placeholder:text-[#696969] placeholder:text-sm focus:ring-0 p-2' />
-                                <img src="https://storagereponeevaydevcdn.blob.core.windows.net/business/N2_searchbar_magnifying_glass.svg" alt="Q" className='h-4 w-4 mx-2' />
-                            </div>
-                        )}
+                    <div className='flex justify-between items-center'>
+                        <div className='flex items-center'>
+                            <p className="ms-2 text-sm w-fit font-medium text-black">Search by Office Address Only</p>
+                        </div>
+                        <label className="inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" className="sr-only peer" />
+                            <div className="mr-[2px] relative w-11 h-6 bg-[#ACACAC] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        </label>
                     </div>
 
-                    {/* locations */}
                     <div>
-                        <button onClick={handleLocationDropdown} className='w-full flex items-center justify-between text-base text-[#2F2F1C] font-semibold'>
-                            Locations
+                        <button onClick={handleMarketSectorDropdown} className='w-full flex items-center justify-between text-base text-[#2F2F1C] font-semibold'>
+                            Market Sector
                             <img src="https://storagereponeevaydevcdn.blob.core.windows.net/business/dropdown_arrow.svg" alt="v"
                                 className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : 'rotate-0'}`} />
                         </button>
 
                         {isDropdownOpen && (
                             <div className=' '>
-                                <div className='mt-4 border border-[#979797] bg-white flex justify-between items-center h-[44px]'>
-                                    <input
-                                        type="text"
-                                        placeholder='Search'
-                                        className='focus:ring-0 border-none p-2 placeholder:text-[#696969] placeholder:text-sm w-full'
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                    />
-                                    <img src="https://storagereponeevaydevcdn.blob.core.windows.net/business/N2_searchbar_magnifying_glass.svg" alt="Q" className='h-4 w-4 mx-2' />
-                                </div>
-
                                 <div style={{ maxHeight: '200px', overflowY: 'scroll', msOverflowStyle: 'none', scrollbarWidth: 'none' }} className='p-2'>
-                                    {citiesToShow.map(city => (
+                                    {MarketSectorToShow.map(city => (
                                         <div className='flex items-center mb-2' key={city}>
                                             <input
                                                 type="checkbox"
