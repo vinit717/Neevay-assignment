@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import SearchResultSearchbar from './SearchResultSearchbar';
-const SearchResultNavbar = () => {
+const SearchResultNavbar = ({ onSearchChange }) => {
+    const handleSearch = (vendorType, tradeOrBusiness, region) => {
+        const filters = {
+            vendorType,
+            services: tradeOrBusiness,
+            city: region
+        };
+        onSearchChange(filters);
+    };
     
     return (
         <>
@@ -12,7 +20,7 @@ const SearchResultNavbar = () => {
                         </li>
                     </ul>
                     <div className='lg:block hidden'>
-                    <SearchResultSearchbar/>
+                    <SearchResultSearchbar onSearch={handleSearch} />
                     </div>
                     <div className='flex justify-around md:justify-between items-center xs:py-2 md:py-0'>
                             <>

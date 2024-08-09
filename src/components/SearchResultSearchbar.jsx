@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import Zoom from "@mui/material/Zoom";
 
-const SearchResultSearchbar = () => {
+const SearchResultSearchbar = ({ onSearch }) => {
     const cities = ["Pune", "Mumbai", "Bangaluru", "Nashik", "Ahmednagar"];
     const [error, setError] = useState(false);
     const [vendorClicked, setVendorClicked] = useState(false);
@@ -51,21 +51,13 @@ const SearchResultSearchbar = () => {
         );
         setRegions(filterCities);
     };
-
-    const handleSearchClick = (e) => {
-        if (
-            selectedVendorType === "" ||
-            selectedTradeOrBusiness === "" ||
-            selectedRegion === ""
-        ) {
-            setError(true);
-            setShowLeftDivider(true);
-            setShowRightDivider(true);
-            setSelectedSection("");
-        } else {
+    
+    const handleSearchClick = () => {
+        if (selectedVendorType && selectedTradeOrBusiness && selectedRegion) {
+            onSearch(selectedVendorType, selectedTradeOrBusiness, selectedRegion);
             setError(false);
-            // Perform search action
-            setSelectedSection("");
+        } else {
+            setError(true);
         }
     };
 
@@ -177,7 +169,7 @@ const SearchResultSearchbar = () => {
                     />
                     <input
                         type="text"
-                        className="h-6 w-full focus:outline-none text-sm text-black font-medium border-none focus:ring-transparent bg-transparent px-[12px] placeholder:font-medium lg:placeholder:text-sm md:placeholder:text-xs lg:mr-1 overflow-x-auto  placeholder-[#787878]"
+                        className="h-6 w-full focus:outline-none text-sm text-black font-medium border-none focus:ring-transparent bg-transparent px-[12px] placeholder:font-medium lg:placeholder:text-sm md:placeholder:text-xs overflow-x-auto  placeholder-[#787878]"
                         value={selectedVendorType}
                         onKeyDown={handleKeyDown}
                         onChange={(e) => setSelectedVendorType(e.target.value)}

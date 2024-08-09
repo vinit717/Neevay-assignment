@@ -1,6 +1,7 @@
 import React from 'react';
 import ContactInfoPopup from './Cards/ContactInfoPopup';
 import BusinessCard from './Cards/BusinessCard';
+import SearchResultBadges from './SearchResultBadges';
 
 const SearchResultCards = ({ cards }) => {
   const [selectedBusiness, setSelectedBusiness] = React.useState(null);
@@ -15,6 +16,7 @@ const SearchResultCards = ({ cards }) => {
 
   return (
     <div>
+      <SearchResultBadges/>
       <div className="min-h-screen flex flex-col items-center pr-8">
         <div className="w-full max-w-6xl">
           {cards.map((business) => (

@@ -6,6 +6,7 @@ export const initialState = {
       searchTerm: '',
       vendorType: '',
       city: '',
+      services: '',
       verifiedStatus: false
     }
   };
@@ -39,17 +40,20 @@ export const initialState = {
           currentPage: action.payload
         };
       case actionTypes.APPLY_FILTERS:
-        const filteredVendors = state.vendors
-          .filter(vendor => vendor.services.some(service => service.toLowerCase().includes(state.filters.searchTerm.toLowerCase())))
-          .filter(vendor => !state.filters.verifiedStatus || vendor.verifiedStatus)
-          .filter(vendor => !state.filters.city || vendor.officeAddress.City === state.filters.city);
-  
-        return {
-          ...state,
-          filteredVendors
-        };
+        const { searchTerm, vendorType, services, city } = state.filters;
+        const filtered = state.vendors.filter(vendor => {
+          return (
+            (!vendorType || (vendor.vendorType && vendor.vendorType.includes(vendorType))) &&
+            (!services || (vendor.services && vendor.services.some(service => service.includes(services)))) &&
+            (!city || (vendor.officeAddress && vendor.officeAddress.City && vendor.officeAddress.City.includes(city))) &&
+            (!searchTerm || (vendor.vendorName && vendor.vendorName.toLowerCase().includes(searchTerm.toLowerCase())))
+          );
+        });
+        console.log("Filtered vendors:", filtered);
+        return { ...state, filteredVendors: filtered };
       default:
         return state;
     }
   };
+  
   
