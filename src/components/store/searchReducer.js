@@ -24,32 +24,37 @@ export const initialState = {
         return {
           ...state,
           vendors: action.payload,
-          filteredVendors: action.payload
+          filteredVendors: action.payload,
         };
       case actionTypes.SET_FILTERS:
         return {
           ...state,
           filters: {
             ...state.filters,
-            ...action.payload
-          }
+            ...action.payload,
+          },
         };
       case actionTypes.SET_CURRENT_PAGE:
         return {
           ...state,
-          currentPage: action.payload
+          currentPage: action.payload,
         };
       case actionTypes.APPLY_FILTERS:
         const { searchTerm, vendorType, services, city } = state.filters;
-        const filtered = state.vendors.filter(vendor => {
+        const filtered = state.vendors.filter((vendor) => {
+          const matchesCity =
+            (!city ||
+              (vendor.officeAddress?.City?.includes(city)) ||
+              (vendor.serviceLocations?.Selectedcities?.includes(city)));
+  
           return (
             (!vendorType || (vendor.vendorType && vendor.vendorType.includes(vendorType))) &&
             (!services || (vendor.services && vendor.services.some(service => service.includes(services)))) &&
-            (!city || (vendor.officeAddress && vendor.officeAddress.City && vendor.officeAddress.City.includes(city))) &&
+            matchesCity &&
             (!searchTerm || (vendor.vendorName && vendor.vendorName.toLowerCase().includes(searchTerm.toLowerCase())))
           );
         });
-        console.log("Filtered vendors:", filtered);
+        console.log('Filtered vendors:', filtered);
         return { ...state, filteredVendors: filtered };
       default:
         return state;
