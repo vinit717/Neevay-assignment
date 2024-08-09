@@ -14,12 +14,12 @@ const SearchResultFilters = ({ dispatch, filters }) => {
                 style={{ overflowY: 'auto', msOverflowStyle: 'none', scrollbarWidth: 'none' }}>
                 <div style={{ overflowY: 'scroll', msOverflowStyle: 'none', scrollbarWidth: 'none' }} className='space-y-8'>
                     <h3 className='text-2xl font-bold'>Filters</h3>
-                    <VerifiedVendorsFilter />
-                    <OfficeAddressFilter />
+                    <VerifiedVendorsFilter dispatch={dispatch} filters={filters} />
+                    <OfficeAddressFilter dispatch={dispatch} filters={filters} />
                     <MarketSectorFilter dispatch={dispatch} filters={filters} />
                     <TurnoverFilter dispatch={dispatch} filters={filters} />
                     <LabourStrengthFilter dispatch={dispatch} filters={filters} />
-                    <BusinessAgeFilter dispatch={dispatch} filters={filters}/>
+                    <BusinessAgeFilter dispatch={dispatch} filters={filters} />
                     <ProjectsCompletedFilter dispatch={dispatch} filters={filters} />
                 </div>
             </div>
