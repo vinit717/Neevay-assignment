@@ -34,7 +34,7 @@ export const reducer = (state, action) => {
       return {
         ...state,
         vendors: action.payload,
-        searchedVendors: action.payload,  // Initially, the searchedVendors is set to all vendors
+        searchedVendors: action.payload,  
         filteredVendors: action.payload,
       };
     case actionTypes.SET_FILTERS:
@@ -49,7 +49,7 @@ export const reducer = (state, action) => {
       return {
         ...state,
         searchedVendors: action.payload,
-        filteredVendors: action.payload, // Initially, filteredVendors is same as searchedVendors
+        filteredVendors: action.payload
       };
     case actionTypes.SET_CURRENT_PAGE:
       return {

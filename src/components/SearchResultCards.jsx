@@ -16,12 +16,18 @@ const SearchResultCards = ({ cards, badges, onRemoveBadge }) => {
 
   return (
     <div>
-     <SearchResultBadges badges={badges} onRemoveBadge={onRemoveBadge} />
+      <SearchResultBadges badges={badges} onRemoveBadge={onRemoveBadge} />
       <div className="min-h-screen flex flex-col items-center pr-8">
         <div className="w-full max-w-6xl">
-          {cards.map((business) => (
-            <BusinessCard key={business.vendorId} business={business} onViewContact={handleViewContact} />
-          ))}
+          {cards.length > 0 ? (
+            cards.map((business) => (
+              <BusinessCard key={business.vendorId} business={business} onViewContact={handleViewContact} />
+            ))
+          ) : (
+            <div className="text-center text-gray-500 mt-10 lg:w-[867px] md:w-[664px] md:h-[284px] lg:h-[299px]">
+              No results found
+            </div>
+          )}
         </div>
       </div>
       {selectedBusiness && (
