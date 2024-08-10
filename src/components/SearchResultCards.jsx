@@ -3,7 +3,7 @@ import ContactInfoPopup from './Cards/ContactInfoPopup';
 import BusinessCard from './Cards/BusinessCard';
 import SearchResultBadges from './SearchResultBadges';
 
-const SearchResultCards = ({ cards }) => {
+const SearchResultCards = ({ cards, badges, onRemoveBadge }) => {
   const [selectedBusiness, setSelectedBusiness] = React.useState(null);
 
   const handleViewContact = (business) => {
@@ -16,7 +16,7 @@ const SearchResultCards = ({ cards }) => {
 
   return (
     <div>
-      <SearchResultBadges/>
+     <SearchResultBadges badges={badges} onRemoveBadge={onRemoveBadge} />
       <div className="min-h-screen flex flex-col items-center pr-8">
         <div className="w-full max-w-6xl">
           {cards.map((business) => (

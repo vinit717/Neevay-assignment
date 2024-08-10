@@ -27,6 +27,10 @@ const SearchResults = () => {
         dispatch({ type: actionTypes.SET_CURRENT_PAGE, payload: pageNumber });
     };
 
+    const handleRemoveBadge = (badge) => {
+        dispatch({ type: actionTypes.REMOVE_BADGE, payload: { badge } });
+    };
+
     const currentPage = state.currentPage;
     const cardsPerPage = 5;
     const indexOfLastCard = currentPage * cardsPerPage;
@@ -64,7 +68,9 @@ const SearchResults = () => {
 
                 </div>
                 <div className='mt-8 h-screen overflow-y-auto hide-scrollbar'>
-                    <SearchResultCards cards={currentCards} />
+                    <SearchResultCards  cards={currentCards} 
+                        badges={state.badges} 
+                        onRemoveBadge={handleRemoveBadge}  />
                 </div>
             </div>
             <div className='bg-gray-100 pb-8 pr-8'>
