@@ -16,24 +16,6 @@ const SearchResultSearchbar = ({ onSearch }) => {
 
     const dropdownRef = useRef(null);
 
-    const mostPopularSearchesData = {
-        Contractors: ["Civil", "Plumbing", "Waterproofing", "EPC", "Labour"],
-        Suppliers: [
-            "Cement",
-            "TMT Bar",
-            "Conveyor",
-            "Electrical",
-            "Building Materials",
-        ],
-        Consultants: [
-            "RCC",
-            "Electrical",
-            "Project Management",
-            "MK Design",
-            "Civil",
-        ],
-    };
-
     const mostPopularSearchCityData = ["Pune", "Mumbai", "Delhi", "Bengaluru"];
     const [regions, setRegions] = useState(cities);
 

@@ -15,12 +15,11 @@ const SearchResults = () => {
         dispatch({ type: actionTypes.SET_VENDORS, payload: vendorData });
     }, []);
 
-    useEffect(() => {
-        dispatch({ type: actionTypes.APPLY_FILTERS });
-    }, [state.filters, state.vendors]);
-
     const handleSearchChange = (filters) => {
-        dispatch({ type: actionTypes.SET_FILTERS, payload: filters });
+        const filteredVendors = vendorData.filter((vendor) =>
+            vendor.vendorName.toLowerCase().includes(filters.services.toLowerCase())
+        );
+        dispatch({ type: actionTypes.SET_SEARCHED_VENDORS, payload: filteredVendors });
     };
 
     const handlePageChange = (pageNumber) => {
@@ -30,6 +29,10 @@ const SearchResults = () => {
     const handleRemoveBadge = (badge) => {
         dispatch({ type: actionTypes.REMOVE_BADGE, payload: { badge } });
     };
+
+    useEffect(() => {
+        dispatch({ type: actionTypes.APPLY_FILTERS });
+    }, [state.filters, state.searchedVendors]);
 
     const currentPage = state.currentPage;
     const cardsPerPage = 5;

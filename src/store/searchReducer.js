@@ -1,5 +1,6 @@
 export const initialState = {
   vendors: [],
+  searchedVendors: [],
   filteredVendors: [],
   currentPage: 1,
   filters: {
@@ -33,6 +34,7 @@ export const reducer = (state, action) => {
       return {
         ...state,
         vendors: action.payload,
+        searchedVendors: action.payload,  // Initially, the searchedVendors is set to all vendors
         filteredVendors: action.payload,
       };
     case actionTypes.SET_FILTERS:
@@ -43,6 +45,12 @@ export const reducer = (state, action) => {
           ...action.payload,
         },
       };
+    case actionTypes.SET_SEARCHED_VENDORS:
+      return {
+        ...state,
+        searchedVendors: action.payload,
+        filteredVendors: action.payload, // Initially, filteredVendors is same as searchedVendors
+      };
     case actionTypes.SET_CURRENT_PAGE:
       return {
         ...state,
@@ -50,7 +58,6 @@ export const reducer = (state, action) => {
       };
     case actionTypes.APPLY_FILTERS:
       const {
-        searchTerm,
         vendorType,
         services,
         city,
@@ -64,7 +71,7 @@ export const reducer = (state, action) => {
       } = state.filters;
 
       const isDefaultTurnoverRange = turnoverRange[0] === 0 && turnoverRange[1] === 100;
-      const filtered = state.vendors.filter((vendor) => {
+      const filtered = state.searchedVendors.filter((vendor) => {
         const matchesCity = searchByOfficeAddressOnly
           ? vendor.officeAddress?.City === city
           : (!city ||
@@ -112,7 +119,6 @@ export const reducer = (state, action) => {
           (!vendorType || vendor.vendorType.includes(vendorType)) &&
           (!services || vendor.services.some(service => service.includes(services))) &&
           matchesCity &&
-          (!searchTerm || vendor.vendorName.toLowerCase().includes(searchTerm.toLowerCase())) &&
           (!verifiedStatus || vendor.verifiedStatus === verifiedStatus) &&
           matchesMarketSector() &&
           matchesLaborStrength() &&
@@ -122,37 +128,32 @@ export const reducer = (state, action) => {
         );
       });
 
-      console.log('Filtered vendors:', filtered);
-
       const appliedFilters = Object.entries(state.filters)
-    .filter(([key, value]) => {
-      if (key === 'turnoverRange' && isDefaultTurnoverRange) return false;
-      return value && key !== 'searchTerm';
-    })
-    .map(([key]) => key);
+        .filter(([key, value]) => {
+          if (key === 'turnoverRange' && isDefaultTurnoverRange) return false;
+          return value && key !== 'searchTerm';
+        })
+        .map(([key]) => key);
 
-      console.log('Applied filters (badges):', appliedFilters);
-
-      return { 
-        ...state, 
-        filteredVendors: filtered, 
-        badges: appliedFilters 
+      return {
+        ...state,
+        filteredVendors: filtered,
+        badges: appliedFilters,
       };
-      
-    case actionTypes.ADD_BADGE:
-      const newBadge = action.payload.badge;
-      if (!state.badges.includes(newBadge)) {
-        console.log('Adding badge:', newBadge);
-        return {
-          ...state,
-          badges: [...state.badges, newBadge],
-        };
-      }
-      return state;
+      case actionTypes.ADD_BADGE:
+        const newBadge = action.payload.badge;
+        if (!state.badges.includes(newBadge)) {
+          console.log('Adding badge:', newBadge);
+          return {
+            ...state,
+            badges: [...state.badges, newBadge],
+          };
+        }
+        return state;
+  
 
     case actionTypes.REMOVE_BADGE:
       const { badge } = action.payload;
-      console.log('Removing badge:', badge);
       const newFilters = { ...state.filters };
 
       switch (badge) {
@@ -169,9 +170,6 @@ export const reducer = (state, action) => {
 
       const updatedBadges = state.badges.filter(b => b !== badge);
 
-      console.log('Updated filters:', newFilters);
-      console.log('Updated badges:', updatedBadges);
-
       return {
         ...state,
         filters: newFilters,
@@ -182,3 +180,4 @@ export const reducer = (state, action) => {
       return state;
   }
 };
+
