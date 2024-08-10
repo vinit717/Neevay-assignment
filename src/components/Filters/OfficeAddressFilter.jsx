@@ -13,7 +13,15 @@ const OfficeAddressFilter = ({ dispatch, filters }) => {
     return (
         <div className='flex justify-between items-center'>
             <div className='flex items-center'>
-                <p className="ms-2 text-sm w-fit font-medium text-black">Search by Office Address Only</p>
+            <p className="ms-2 w-fit  text-sm font-medium text-black flex items-center">
+  Search by Office Address Only 
+  <span 
+    className="bg-[#4E4E4E]  text-[10px]  text-[#CCCCCC] w-[12px] h-[12px] rounded-full flex items-center justify-center font-bold ms-1 relative top-0.5 cursor-pointer"
+  >
+    ?
+  </span>
+</p>
+
             </div>
             <label className="inline-flex items-center cursor-pointer">
                 <input 
