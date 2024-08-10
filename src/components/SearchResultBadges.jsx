@@ -1,6 +1,4 @@
 const SearchResultBadges = ({ badges, onRemoveBadge }) => {
-    console.log("bagessssss+++", badges);
-    console.log("onremovebadges", onRemoveBadge)
     return (
       <div className='space-x-4 mt-8'>
         {badges.map((badge) => (

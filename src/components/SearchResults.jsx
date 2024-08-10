@@ -16,11 +16,14 @@ const SearchResults = () => {
     }, []);
 
     const handleSearchChange = (filters) => {
+        dispatch({ type: actionTypes.SET_FILTERS, payload: filters });
+    
         const filteredVendors = vendorData.filter((vendor) =>
-            vendor.vendorName.toLowerCase().includes(filters.services.toLowerCase())
+            vendor.services.some(service => service.toLowerCase().includes(filters.services.toLowerCase()))
         );
         dispatch({ type: actionTypes.SET_SEARCHED_VENDORS, payload: filteredVendors });
     };
+        
 
     const handlePageChange = (pageNumber) => {
         dispatch({ type: actionTypes.SET_CURRENT_PAGE, payload: pageNumber });
@@ -33,6 +36,7 @@ const SearchResults = () => {
     useEffect(() => {
         dispatch({ type: actionTypes.APPLY_FILTERS });
     }, [state.filters, state.searchedVendors]);
+    
 
     const currentPage = state.currentPage;
     const cardsPerPage = 5;
