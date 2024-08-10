@@ -3,7 +3,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Zoom from "@mui/material/Zoom";
 
 const SearchResultSearchbar = ({ onSearch }) => {
-    const cities = ["Pune", "Mumbai", "Bangaluru", "Nashik", "Ahmednagar"];
+    const cities = ["Nashik", "Ahmednagar"];
     const [error, setError] = useState(false);
     const [vendorClicked, setVendorClicked] = useState(false);
     const [regionClicked, setRegionClicked] = useState(false);
@@ -299,7 +299,7 @@ const SearchResultSearchbar = ({ onSearch }) => {
                             />
                         </Tooltip>
                     )}
-                    {regionClicked && (
+                   {regionClicked && (
                         <ul
                             ref={dropdownRef}
                             className="absolute z-50 max-h-48 overflow-auto bg-[#fff] py-4 md:w-[200px] lg:w-[215px] rounded-3xl md:top-[50px] lg:top-[60px] text-sm font-medium shadow cursor-default"

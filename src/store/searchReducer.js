@@ -56,96 +56,95 @@ export const reducer = (state, action) => {
         ...state,
         currentPage: action.payload,
       };
-    case actionTypes.APPLY_FILTERS:
-      const {
-        vendorType,
-        services,
-        city,
-        verifiedStatus,
-        marketSector,
-        turnoverRange,
-        laborStrength,
-        businessAge,
-        minProjectsCompleted,
-        searchByOfficeAddressOnly,
-      } = state.filters;
-
-      const isDefaultTurnoverRange = turnoverRange[0] === 0 && turnoverRange[1] === 100;
-      const filtered = state.searchedVendors.filter((vendor) => {
-        const matchesCity = searchByOfficeAddressOnly
-            ? vendor.officeAddress?.City === city
-            : (!city ||
-                vendor.officeAddress?.City === city ||
-                vendor.serviceLocations?.Selectedcities.includes(city));
-    
-        const matchesTurnover = vendor.turnover
-            ? parseInt(vendor.turnover.replace(/\D/g, '')) >= turnoverRange[0] &&
-              parseInt(vendor.turnover.replace(/\D/g, '')) <= turnoverRange[1]
-            : true;
-    
-        const matchesLaborStrength = () => {
-            if (!laborStrength) return true;
-            if (laborStrength === '100+') return parseInt(vendor.laborStrength.split('-')[1]) >= 100;
-    
-            const [filterMin, filterMax] = laborStrength.split('-').map(Number);
-            const [vendorMin, vendorMax] = vendor.laborStrength.split('-').map(Number);
-    
-            return vendorMin <= filterMax && vendorMax >= filterMin;
+      case actionTypes.APPLY_FILTERS:
+        const {
+          vendorType,
+          services,
+          city,
+          verifiedStatus,
+          marketSector,
+          turnoverRange,
+          laborStrength,
+          businessAge,
+          minProjectsCompleted,
+          searchByOfficeAddressOnly,
+        } = state.filters;
+      
+        const isDefaultTurnoverRange = turnoverRange[0] === 0 && turnoverRange[1] === 100;
+        const filtered = state.searchedVendors.filter((vendor) => {
+          const matchesCity = searchByOfficeAddressOnly
+              ? vendor.officeAddress?.City === city
+              : (!city ||
+                  vendor.officeAddress?.City === city ||
+                  vendor.serviceLocations?.Selectedcities.includes(city));
+      
+          const matchesTurnover = vendor.turnover
+              ? parseInt(vendor.turnover.replace(/\D/g, '')) >= turnoverRange[0] &&
+                parseInt(vendor.turnover.replace(/\D/g, '')) <= turnoverRange[1]
+              : true;
+      
+          const matchesLaborStrength = () => {
+              if (!laborStrength) return true;
+              if (laborStrength === '100+') return parseInt(vendor.laborStrength.split('-')[1]) >= 100;
+      
+              const [filterMin, filterMax] = laborStrength.split('-').map(Number);
+              const [vendorMin, vendorMax] = vendor.laborStrength.split('-').map(Number);
+      
+              return vendorMin <= filterMax && vendorMax >= filterMin;
+          };
+      
+          const matchesBusinessAge = () => {
+              if (!businessAge) return true;
+              const [filterMin, filterMax] = businessAge.split('-').map(num => parseInt(num.trim()));
+              const vendorAge = parseInt(vendor.businessAge.split('-')[1]);
+      
+              if (businessAge.includes('+')) {
+                  return vendorAge >= filterMin;
+              }
+              return vendorAge >= filterMin && vendorAge <= filterMax;
+          };
+      
+          const matchesMinProjectsCompleted = () => {
+              if (!minProjectsCompleted) return true;
+              return vendor.projectsCompleted >= minProjectsCompleted;
+          };
+      
+          const matchesMarketSector = () => {
+              if (!marketSector) return true;
+              const sectors = marketSector.split(', ').map(s => s.toUpperCase());
+              return sectors.some(sector => vendor.marketSector.includes(sector));
+          };
+      
+          const matchesServices = () => {
+              if (!services) return true;
+              return vendor.services.some(service => service.toLowerCase().includes(services.toLowerCase()));
+          };
+      
+          return (
+              (!vendorType || vendor.vendorType.includes(vendorType)) &&
+              matchesServices() &&
+              matchesCity &&
+              (!verifiedStatus || vendor.verifiedStatus === verifiedStatus) &&
+              matchesMarketSector() &&
+              matchesLaborStrength() &&
+              matchesBusinessAge() &&
+              matchesMinProjectsCompleted() &&
+              matchesTurnover
+          );
+        });
+      
+        const appliedFilters = Object.entries(state.filters)
+          .filter(([key, value]) => {
+            if (key === 'turnoverRange' && isDefaultTurnoverRange) return false;
+            return value && key !== 'searchTerm' && key !== 'vendorType' && key !== 'city' && key !== 'services';
+          })
+          .map(([key]) => key);
+      
+        return {
+          ...state,
+          filteredVendors: filtered,
+          badges: appliedFilters,
         };
-    
-        const matchesBusinessAge = () => {
-            if (!businessAge) return true;
-            const [filterMin, filterMax] = businessAge.split('-').map(num => parseInt(num.trim()));
-            const vendorAge = parseInt(vendor.businessAge.split('-')[1]);
-    
-            if (businessAge.includes('+')) {
-                return vendorAge >= filterMin;
-            }
-            return vendorAge >= filterMin && vendorAge <= filterMax;
-        };
-    
-        const matchesMinProjectsCompleted = () => {
-            if (!minProjectsCompleted) return true;
-            return vendor.projectsCompleted >= minProjectsCompleted;
-        };
-    
-        const matchesMarketSector = () => {
-            if (!marketSector) return true;
-            const sectors = marketSector.split(', ').map(s => s.toUpperCase());
-            return sectors.some(sector => vendor.marketSector.includes(sector));
-        };
-    
-        const matchesServices = () => {
-            if (!services) return true;
-            return vendor.services.some(service => service.toLowerCase().includes(services.toLowerCase()));
-        };
-    
-        return (
-            (!vendorType || vendor.vendorType.includes(vendorType)) &&
-            matchesServices() &&
-            matchesCity &&
-            (!verifiedStatus || vendor.verifiedStatus === verifiedStatus) &&
-            matchesMarketSector() &&
-            matchesLaborStrength() &&
-            matchesBusinessAge() &&
-            matchesMinProjectsCompleted() &&
-            matchesTurnover
-        );
-    });
-    
-
-      const appliedFilters = Object.entries(state.filters)
-        .filter(([key, value]) => {
-          if (key === 'turnoverRange' && isDefaultTurnoverRange) return false;
-          return value && key !== 'searchTerm';
-        })
-        .map(([key]) => key);
-
-      return {
-        ...state,
-        filteredVendors: filtered,
-        badges: appliedFilters,
-      };
       // case actionTypes.ADD_BADGE:
       //   const newBadge = action.payload.badge;
       //   if (!state.badges.includes(newBadge)) {
