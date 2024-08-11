@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import SearchResultSearchbar from './SearchResultSearchbar';
 const SearchResultNavbar = ({ onSearchChange }) => {
     const handleSearch = (vendorType, tradeOrBusiness, region) => {

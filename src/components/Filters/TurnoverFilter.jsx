@@ -1,4 +1,3 @@
-// TurnoverFilter.js
 import React, { useState } from 'react';
 import ReactSlider from 'react-slider';
 import { actionTypes } from '../../store/searchReducer';

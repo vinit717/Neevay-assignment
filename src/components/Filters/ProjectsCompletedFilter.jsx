@@ -1,4 +1,3 @@
-// ProjectsCompletedFilter.js
 import React, { useState } from 'react';
 import { actionTypes } from '../../store/searchReducer';
 
@@ -45,7 +44,7 @@ const ProjectsCompletedFilter = ({ dispatch, filters }) => {
                         onChange={handleChangeProjects}
                         style={{
                             background: `linear-gradient(to right, #000 ${((projects - 0) / (100 - 0)) * 100}%, #ddd ${((projects - 0) / (100 - 0)) * 100}%)`,
-                            accentColor: '#202020', // Color for the pointer
+                            accentColor: '#202020', 
                         }}
                         className="w-full h-[2px] bg-gray-200 rounded-lg appearance-none cursor-pointer"
                     />

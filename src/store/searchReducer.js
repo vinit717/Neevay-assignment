@@ -145,16 +145,6 @@ export const reducer = (state, action) => {
           filteredVendors: filtered,
           badges: appliedFilters,
         };
-      // case actionTypes.ADD_BADGE:
-      //   const newBadge = action.payload.badge;
-      //   if (!state.badges.includes(newBadge)) {
-      //     console.log('Adding badge:', newBadge);
-      //     return {
-      //       ...state,
-      //       badges: [...state.badges, newBadge],
-      //     };
-      //   }
-      //   return state;
   
 
     case actionTypes.REMOVE_BADGE:

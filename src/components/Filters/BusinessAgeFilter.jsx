@@ -1,4 +1,3 @@
-// BusinessAgeFilter.js
 import React, { useState } from 'react';
 import { actionTypes } from '../../store/searchReducer';
 
